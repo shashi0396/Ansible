@@ -1,0 +1,42 @@
+---
+- name:  Nginx install
+  hosts: web
+  become: yes
+
+  tasks:
+    - name: nginx install
+      yum:
+        name: nginx
+        state: present
+
+    - name: check nginx status safely
+      shell: systemctl is-active nginx
+      register: nginx_status_safe
+      changed_when: false
+      ignore_errors: yes
+
+    - name: start Nginx if stopped
+      service:
+        name: nginx
+        status: started
+      when: nginx_status_safe.stdout != "active
+
+    - name: Print nginx status
+      debug:
+        var: nginx_install_safe.stdout
+    
+    - name: check uptime
+      shell: uptime
+      register: uptime_nginx
+      changed_when: false
+    
+    - name: Print uptime
+      debug:
+        var: uptime_nginx.stdout
+    
+
+    # - name: stop nginx if active
+    #   service:
+    #     name: nginx
+    #     status: stopped
+    #   when: nginx_status_safe.stdout == "active"
