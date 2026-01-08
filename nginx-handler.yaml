@@ -1,14 +1,28 @@
 - name: Install and configure nginx
-  hosts: web
+  #hosts: web
+  hosts: all
   become: yes
-  # gather_facts: no
+  #gather_facts: no
+  vars:
+  #  nginx_port: 80
+    packages:
+      - git
+      - nginx
 
   tasks:
-    - name: install nginx on Amazon Linux
+    - name: install nginx
       yum:
-        name: nginx
+        name: "{{ item }}"
         state: present
+      loop: "{{ packages }}"
+        #- git
+        #- nginx
+      loop_control:
+        label: {{ item }}
       when: ansible_facts.os_family == "RedHat"
+
+    - debug:
+        msg: "Nginx installed on port {{ nginx_port }} "
 
     - name: install nginx on ubuntu
       apt:
@@ -28,7 +42,7 @@
         msg: "nginx restarted before this line"
 
     - debug:
-        msg: "Details of inventory {{ inventory_hostname }} OS={{ ansible_facts.distribution }}"
+        msg: "Details of inventory {{ inventory_hostname }} OS={{ ansible_facts.distribution }} on {{ env }}"
 
   handlers:
     - name: restart nginx
