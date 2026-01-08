@@ -20,16 +20,13 @@
       loop_control:
         label: {{ item }}
       when: ansible_facts.os_family == "RedHat"
-
     - debug:
         msg: "Nginx installed on port {{ nginx_port }} "
-
     - name: install nginx on ubuntu
       apt:
         name: nginx
         state: present
       when: ansible_facts.os_family == "Ubuntu"
-
     - name: copy nginx file
       copy:
         src: dummy.conf
@@ -40,7 +37,6 @@
 
     - debug:
         msg: "nginx restarted before this line"
-
     - debug:
         msg: "Details of inventory {{ inventory_hostname }} OS={{ ansible_facts.distribution }} on {{ env }}"
 
