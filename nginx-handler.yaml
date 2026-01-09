@@ -39,6 +39,26 @@
         msg: "nginx restarted before this line"
     - debug:
         msg: "Details of inventory {{ inventory_hostname }} OS={{ ansible_facts.distribution }} on {{ env }}"
+    
+    - block:   # try{} block
+        - name: gather service facts
+          service_facts:
+
+        - name: stop nginx if running
+          service:
+            name: nginx
+            state: stopped
+          when:
+            - "'nginx.service' in ansible_facts.services"
+            - ansible_facts.services['nginx.service'].state == 'running' 
+    
+      rescue:  # except{} block , when something failed
+        - debug:
+            msg: "nginx not installed or service failed"
+      
+      always:   # finally{} block , always runs
+        - debug:
+            msg: "nginx check completed"
 
   handlers:
     - name: restart nginx
