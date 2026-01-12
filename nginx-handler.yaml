@@ -59,6 +59,16 @@
       always:   # finally{} block , always runs
         - debug:
             msg: "nginx check completed"
+      
+    - name:  Create Hello file for jinja2
+      template:
+        src: hello.j2
+        dest: /home/ec2-user/hello.txt
+    
+    - name: system facts from jinja2
+      template:
+        src: system.j2
+        dest: /home/ec2-user/latest_system_facts.log
 
   handlers:
     - name: restart nginx

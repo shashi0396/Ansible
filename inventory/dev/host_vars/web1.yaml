@@ -1,2 +1,3 @@
 nginx_port: 80
 env: prod_var_from_host_vars_under_web1.yaml
+app_name: jinja_app
