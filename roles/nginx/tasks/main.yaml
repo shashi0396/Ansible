@@ -1,0 +1,14 @@
+- name: install nginx
+  yum:
+    name: nginx
+    state: present
+
+- name: start nginx
+  service:
+    name: nginx
+    state: started
+
+- name: system facts from jinja2
+  template:
+    src: system.j2
+    dest: /home/ec2-user/latest_system_facts.log

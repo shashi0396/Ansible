@@ -1,0 +1,21 @@
+---
+profile: production
+
+skip_list:
+  - name[casing]          # Ignore task name capitalization
+  - risky-file-permissions # Ignore chmod warnings (labs only)
+
+exclude_paths:
+  - .git/
+  - .github/
+  - inventory/
+
+enable_list:
+  - fqcn
+  - no-log-password
+  - yaml
+
+warn_list:
+  - experimental
+
+offline: true

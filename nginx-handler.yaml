@@ -18,7 +18,7 @@
         #- git
         #- nginx
       loop_control:
-        label: {{ item }}
+        label: "{{ item }}"
       when: ansible_facts.os_family == "RedHat"
     - debug:
         msg: "Nginx installed on port {{ nginx_port }} "
@@ -69,6 +69,12 @@
       template:
         src: system.j2
         dest: /home/ec2-user/latest_system_facts.log
+    
+    - name: pull system facts
+      fetch:
+        src: /home/ec2-user/latest_system_facts.log
+        dest: /output/web_server_facts.log
+        flat: yes
 
   handlers:
     - name: restart nginx
