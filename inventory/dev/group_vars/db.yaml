@@ -1,2 +1,0 @@
-nginx_port: 80
-env: prod_var_from_group_vars_under_db.yaml
