@@ -1,5 +1,5 @@
 - name: apply nginx role
-  hosts: web
+  hosts: env_dev
   become: yes
 
   roles:
