@@ -1,0 +1,32 @@
+#!/bin/bash
+set -e
+
+exec > /var/log/user-data.log 2>&1
+
+sudo yum install -y \
+    git \
+    ansible \
+    python3-pip
+
+pip3 install boto3 botocore
+
+VERIFY_VERSION_FILE="/var/log/userdata_version.log"
+ {
+    echo "Date: $(date)"
+    echo "Python version: $(python3 --version)"
+    echo "Ansible version: $(ansible --version | head -n 1)"
+    echo "boto3 version: $(python3 - <<EOF
+import boto3
+print(boto3.__version__)
+EOF
+)"
+    echo "botocore version: $(python3 - <<EOF
+import botocore
+print(botocore.__version__)
+EOF
+)"
+    echo "Git version: $(git --version)"
+    echo "======= installation complete ======="
+ } > "${VERIFY_VERSION_FILE}"
+
+touch /etc/userdata_complete.log

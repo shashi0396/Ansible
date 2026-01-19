@@ -5,10 +5,13 @@ regions:
 
 filters:
   instance-state-name: running
+  tag:Env: dev
 
 keyed_groups:
   - key: tags.Role
-    prefix: role_
+    prefix: role
+  - key: tags.Env
+    prefix: env
 
 hostnames:
   - private-ip-address
